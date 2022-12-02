@@ -44,6 +44,8 @@ class UNetModel(nn.Module):
         #kan inte komma på hur man ska göra sista ouputlayer 
         self.finalayers=None
 
+        
+
     def cropthing(self, encodingFeature,x):
         encodingFeature=transforms.CenterCrop([x.shape()[2] ,x.shape()[3]])(encodingFeature)
         return encodingFeature
