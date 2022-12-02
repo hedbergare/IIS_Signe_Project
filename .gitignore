@@ -1,2 +1,5 @@
 /GR/Data/X_train.npy
 /GR/Data/Y_train.npy
+LE/__pycache__/ladda_data.cpython-310.pyc
+.gitignore
+LE/__pycache__/Unet.cpython-310.pyc
