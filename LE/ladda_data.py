@@ -5,7 +5,7 @@ from imageio import v3 as iio
 import random
 
 
-def prepare_all_data():
+def prepare_all_data(precent_of_videos=1):
     gestures = [
         'letter_A',
         'letter_B',
@@ -17,7 +17,8 @@ def prepare_all_data():
     train_data = []
     test_data = []
     for gesture in gestures:
-        train_for_gesture, test_for_gesture = get_one_letter(gesture)
+        train_for_gesture, test_for_gesture = get_one_letter(
+            gesture, precent_of_videos)
         train_data.extend(train_for_gesture)
         test_data.extend(test_for_gesture)
     random.Random(2).shuffle(train_data)
@@ -25,12 +26,13 @@ def prepare_all_data():
     return train_data, test_data
 
 
-def get_one_letter(letter):
+def get_one_letter(letter, precent_of_videos):
     data_all_videos = []
     path = f'../dataset_v0/ASL_{letter}'
     CSV = pd.read_csv(f'{path}/annotations.csv')
     num_of_videos = CSV['video_idx'].nunique()
-    for video_index in range(num_of_videos):
+    num_of_videos_we_want = round(precent_of_videos*num_of_videos)
+    for video_index in range(num_of_videos_we_want):
         one_video = iio.imread(f'{path}/videos/video_{video_index}.mp4')
         if one_video.shape[1] == 480 or one_video.shape[2] == 640:
             one_video = iio.imread(f'{path}/videos/video_{video_index}.mp4')
