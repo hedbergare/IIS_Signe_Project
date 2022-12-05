@@ -17,11 +17,9 @@ def get_GR_data():
     X_data = np.load(X_path, allow_pickle=True)
     Y_data = np.load(Y_path, allow_pickle=True)
 
-    X_shuffled, Y_shuffled = unison_shuffled_copies(X_data, Y_data)
-
     # Make them numpy arrays
-    X_array = np.array(X_shuffled)
-    Y_array = np.array(Y_shuffled)
+    X_array = np.array(X_data)
+    Y_array = np.array(Y_data)
 
     # Normalize X-vectors
     X_array = (X_array - np.min(X_array))/(np.max(X_array) - np.min(X_array))
@@ -35,6 +33,9 @@ def get_GR_data():
 
     Y_train = Y_array[0:train_size]
     Y_test = Y_array[train_size:]
+
+    X_train, Y_train = unison_shuffled_copies(X_train, Y_train)
+    X_test, Y_test = unison_shuffled_copies(X_test, Y_test)
 
     return X_train, X_test, Y_train, Y_test
 
