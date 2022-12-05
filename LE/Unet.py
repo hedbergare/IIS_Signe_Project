@@ -2,6 +2,7 @@
 import torch
 from torch import nn
 from torchvision import  transforms
+import dsntnn
 
 
 # mellan varje nivå i u net har man ett
@@ -27,8 +28,11 @@ class UNetModel(nn.Module):
         self.decBlocks = nn.ModuleList()
         self.upconvs = nn.ModuleList()
         self.maxPool=nn.MaxPool2d(2)
-        self.encodingDropoutList=nn.ModuleList()
-        self.decodingDropoutList=nn.ModuleList()
+
+
+        #this is from the dnsf example i found i think 20 is refering to the amount of poition to identify
+        self.hm_conv = nn.Conv2d(self.decodingLayesSizes[-1][1], 20, kernel_size=1, bias=False)
+
 
 
         for layer in self.encodingLayersSizes:
@@ -41,10 +45,8 @@ class UNetModel(nn.Module):
         
 
 
-        #kan inte komma på hur man ska göra sista ouputlayer 
-        self.finalayers=None
 
-        
+
 
     def cropthing(self, encodingFeature,x):
         encodingFeature=transforms.CenterCrop([x.shape()[2] ,x.shape()[3]])(encodingFeature)
@@ -65,8 +67,14 @@ class UNetModel(nn.Module):
             x=layer[0](x)
         
 
+        
+        
+        #final layer uses dnfs based on ruff interpetation  of code from gihhub see https://github.com/anibali/dsntnn/blob/master/examples/basic_usage.md
+        x = self.hm_conv(x)
+        x = dsntnn.flat_softmax(x)
+        x = dsntnn.dsnt(x)
+        
+        
+        return x
 
 
-
-
-        return self.finalayers(x)
