@@ -12,8 +12,8 @@ def get_GR_data():
     # Read data from files
     path_of_dir = os.getcwd()
     print("DIR PATH", path_of_dir)
-    X_path = os.path.join(path_of_dir, path_of_dir, "GR\\Data\\X_train.npy")
-    Y_path = os.path.join(path_of_dir, path_of_dir, "GR\\Data\\Y_train.npy")
+    X_path = os.path.join(path_of_dir, path_of_dir, "Data\\X_train.npy")
+    Y_path = os.path.join(path_of_dir, path_of_dir, "Data\\Y_train.npy")
     X_data = np.load(X_path, allow_pickle=True)
     Y_data = np.load(Y_path, allow_pickle=True)
 
