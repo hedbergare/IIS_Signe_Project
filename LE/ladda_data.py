@@ -58,7 +58,7 @@ def get_one_video(one_video_csv, one_video):
         one_frame_csv = one_frame_csv[one_frame_csv['joint']
                                       != 'hand_position']
         this_frame = one_video[frame_index]
-        this_frame_tensor = torch.tensor(this_frame)
+        this_frame_tensor = torch.tensor(this_frame).float()
         this_frame_tensor = torch.reshape(this_frame_tensor, (3, 640, 480))
         csv_one_frame = get_data_from_one_frame(one_frame_csv)
         x_y_pairs.append([this_frame_tensor, csv_one_frame])
