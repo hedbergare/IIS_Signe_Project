@@ -68,14 +68,13 @@ class UNetModel(nn.Module):
             x=layer[0](x)
         
 
+        
+        
         #final layer uses dnfs based on ruff interpetation  of code from gihhub see https://github.com/anibali/dsntnn/blob/master/examples/basic_usage.md
         x = self.hm_conv(x)
         x = dsntnn.flat_softmax(x)
         x = dsntnn.dsnt(x)
-        x = torch.add(x,1)
-        x = torch.div(x,2)
-        redoCord = torch.tensor([640 ,480 ])
-        x = torch.mul(x, redoCord)
+        
         
         return x
 
