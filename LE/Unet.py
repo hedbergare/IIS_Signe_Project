@@ -28,8 +28,7 @@ class UNetModel(nn.Module):
         self.decBlocks = nn.ModuleList()
         self.upconvs = nn.ModuleList()
         self.maxPool=nn.MaxPool2d(2)
-        self.encodingDropoutList=nn.ModuleList()
-        self.decodingDropoutList=nn.ModuleList()
+
 
         #this is from the dnsf example i found i think 20 is refering to the amount of poition to identify
         self.hm_conv = nn.Conv2d(self.decodingLayesSizes[-1][1], 20, kernel_size=1, bias=False)
