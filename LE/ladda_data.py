@@ -3,6 +3,7 @@ import pandas as pd
 import torch
 from imageio import v3 as iio
 import random
+import dsntnn
 
 
 def prepare_all_data(precent_of_videos=1):
@@ -38,12 +39,11 @@ def get_one_letter(letter, precent_of_videos):
             one_video = iio.imread(f'{path}/videos/video_{video_index}.mp4')
             one_video_csv = CSV[CSV['video_idx'] == video_index]
             pairs_from_one_video = get_one_video(one_video_csv, one_video)
-            data_all_videos.extend(pairs_from_one_video)
+            data_all_videos.append(pairs_from_one_video)
     return shuffle_and_split(data_all_videos)
 
 
 def shuffle_and_split(letter_data):
-    random.Random(2).shuffle(letter_data)
     train_size = round(0.8 * len(letter_data))
     train_set = letter_data[0:train_size]
     test_set = letter_data[train_size:len(letter_data)]
@@ -62,13 +62,14 @@ def get_one_video(one_video_csv, one_video):
         this_frame_tensor = torch.reshape(this_frame_tensor, (3, 640, 480))
         csv_one_frame = get_data_from_one_frame(one_frame_csv)
         x_y_pairs.append([this_frame_tensor, csv_one_frame])
+        random.Random(2).shuffle(x_y_pairs)
     return x_y_pairs
 
 
 def get_data_from_one_frame(one_frame_csv):
     cord_list = []
     for index, row in one_frame_csv.iterrows():
-        cord_list.append(row['x'])
-        cord_list.append(row['y'])
+        cord=dsntnn.pixel_to_normalized_coordinates(torch.tensor([row['x'],row['y']]),[480,640])
+        cord_list.append(torch.Tensor.tolist(cord))
     cord_tensor = torch.tensor(cord_list)
     return cord_tensor
