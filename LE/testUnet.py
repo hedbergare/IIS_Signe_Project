@@ -1,7 +1,6 @@
 import torch
 from torch import nn
 import torchvision.transforms as T
-from PIL import Image
 import torchvision
 import dsntnn
 
@@ -83,6 +82,7 @@ class UNetModel(nn.Module):
     def forward(self, x):
         encodingFeatures = []
         for i in range(len(self.encBlocks)):
+            print('enc', i)
             x = self.encBlocks[i](x)
             if i != (len(self.encBlocks)-1):
                 encodingFeatures.append(x)
