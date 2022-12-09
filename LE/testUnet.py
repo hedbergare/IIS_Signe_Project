@@ -102,6 +102,7 @@ class UNetModel(nn.Module):
 
         x = self.hm_conv(x)
         x = dsntnn.flat_softmax(x)
+        x = torch.unsqueeze(x, dim=0)
         x = dsntnn.dsnt(x)
 
         return x
