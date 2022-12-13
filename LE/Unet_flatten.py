@@ -83,7 +83,7 @@ class UNetModel(nn.Module):
         x_cord = self.linear11(x)
         x_cord = self.relu(x_cord)
         x_cord = self.linear12(x_cord)
-
+        
         x_exists = self.linear21(x)
         x_exists = self.relu(x_exists)
         x_exists = self.linear22(x_exists)
