@@ -4,7 +4,6 @@ from Unet_flatten import UNetModel
 from ny_ladda_data import ladda
 from loss_function import distance_loss, binary_loss
 from real_loss import real_loss
-import math
 
 device = torch.device('mps')
 
@@ -15,7 +14,7 @@ x = UNetModel(4, 3, 20, 64).to(device)
 
 loss = 0
 num_epochs = 1
-num_runs_per_backward = 2 
+batch_size = 2 
 optim = torch.optim.SGD(x.parameters(), lr=0.000000001, momentum=0.9)
 x.train()
 loss = 0
@@ -47,8 +46,8 @@ for epoch in range(num_epochs):
             true_loss += real_loss(output_cord, output_exists, train_data[i][1])
 
 
-            if i % (num_runs_per_backward) == (num_runs_per_backward-1) or i == (len(train_data)-1):
-                print(data_round,i, true_loss/num_runs_per_backward)
+            if i % (batch_size) == (batch_size-1) or i == (len(train_data)-1):
+                print(data_round,i, true_loss/batch_size)
                 optim.zero_grad()
                 loss.backward()
                 optim.step()

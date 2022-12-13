@@ -38,7 +38,6 @@ def one_letter(gest, data_divided_into, data_pass, video_mod):
     for video_i in range(num_of_videos):
         if video_i%5 in video_mod:
             needs_scaling = False
-            video = iio.imread(f'{path}/videos/video_{video_i}.mp4')
             one_video = torch.tensor(iio.imread(f'{path}/videos/video_{video_i}.mp4'))
             one_video = torch.reshape(one_video, 
                             (one_video.shape[0],one_video.shape[3],
