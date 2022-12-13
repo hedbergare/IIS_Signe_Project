@@ -82,27 +82,21 @@ class UNetModel(nn.Module):
     def forward(self, x):
         encodingFeatures = []
         for i in range(len(self.encBlocks)):
-            print('enc', i)
             x = self.encBlocks[i](x)
             if i != (len(self.encBlocks)-1):
                 encodingFeatures.append(x)
                 x = self.maxPool[i](x)
 
         for i, dec in enumerate(self.decBlocks):
-            print(i)
             x = self.upconvs[i](x)
-            print('innan cat', x.shape)
-            print(encodingFeatures[-1].shape)
             x = torch.cat((x, encodingFeatures[-1]))
-            print('efter cat', x.shape)
             encodingFeatures.pop()
-            print('Innan dec')
             x = dec(x)
-            print('Eftert dec')
 
         x = self.hm_conv(x)
-        x = dsntnn.flat_softmax(x)
         x = torch.unsqueeze(x, dim=0)
-        x = dsntnn.dsnt(x)
+        heatmap= dsntnn.flat_softmax(x)
+    
+        x = dsntnn.dsnt(heatmap)
 
-        return x
+        return x,heatmap
