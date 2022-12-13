@@ -3,6 +3,7 @@ from imageio import v3 as iio
 import torch
 import pandas as pd
 import torchvision
+import dsntnn
 
 
 def ladda(typ, seed, validation_round, data_divided_into, data_pass):
@@ -25,7 +26,7 @@ def ladda(typ, seed, validation_round, data_divided_into, data_pass):
     ]
     for gest in gestures:
         data = one_letter(gest, data_divided_into, data_pass, video_mod)
-        all_data_list.extend(data)
+        all_data_list.extend(data)  
     random.Random(seed).shuffle(all_data_list)
     return all_data_list
 
@@ -80,8 +81,10 @@ def get_data_from_one_frame(one_frame_csv):
         cord_one_point = []
         cord_one_point.append(row['y'])
         cord_one_point.append(row['x'])
-        cord_list.append(cord_one_point)    
-    return torch.tensor(cord_list)
+        cord_list.append(cord_one_point) 
+    cord_tens=torch.tensor(cord_list)
+    cord_tens = dsntnn.pixel_to_normalized_coordinates(cord_tens,(480,640))
+    return cord_tens
 
 
 
