@@ -5,32 +5,38 @@ from ny_ladda_data import ladda
 from torch import nn
 import dsntnn
 import matplotlib.pyplot as plt
+import sys
+import time
 
 
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print(device)
+x = UNetModel(4, 3, 20, 64).to(device)
 
-x = UNetModel(4, 3, 20, 64)
-optimizer = torch.optim.RMSprop(x.parameters(), lr=0.1)
-
-
+optimizer = torch.optim.RMSprop(x.parameters())
 
 
 loss = 0
-num_epochs = 1
+num_epochs = 3
 num_runs_per_backward = 2 
 x.train()
-num_divide_data = 50
+num_divide_data = 20
 
-
+losses=[]
+print(torch.__version__)
 for epoch in range(num_epochs):
+    print(epoch)
     percent_fetched = 0
     for data_round in range(num_divide_data):
+        thetime=time.perf_counter()
+    
         print('Collect Data')
         train_data = ladda(typ='träning', seed=2, validation_round=1, data_divided_into=num_divide_data, data_pass=data_round)
         print('Data Collected')
         for frame in train_data:
-            input=frame[0]
-            val=frame[1]
+            input=frame[0].to(device)
+            val=frame[1].to(device)
             val = torch.unsqueeze(val, dim=0)
 
 
@@ -47,17 +53,15 @@ for epoch in range(num_epochs):
             # Calculate gradients
             optimizer.zero_grad()
             loss.backward()
-
+            del input
+            del val
             # Update model parameters with RMSprop
-            optimizer.step()
-            plt.imshow(heatmaps[0, 0].detach().numpy())
-            plt.show()
-        
+        print(time.perf_counter()-thetime)
+        print(data_round)
+        torch.save(x.state_dict(), "landmark_model.pth")
            
 
 
-
-torch.save(x.state_dict(), "landmark_model.pth")
 
 
 

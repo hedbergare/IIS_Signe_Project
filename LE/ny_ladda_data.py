@@ -33,7 +33,7 @@ def ladda(typ, seed, validation_round, data_divided_into, data_pass):
 def one_letter(gest, data_divided_into, data_pass, video_mod):
     resize = torchvision.transforms.Resize((640,480))
     all_data = []
-    path = f'../dataset_v0/ASL_{gest}'
+    path = f'./dataset_v0/ASL_{gest}'
     CSV = pd.read_csv(f'{path}/annotations.csv')
     num_of_videos = CSV['video_idx'].nunique()
     for video_i in range(num_of_videos):
