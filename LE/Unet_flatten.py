@@ -37,7 +37,7 @@ class UNetModel(nn.Module):
         self.linear11 = nn.Linear(640*480, 160)
         self.linear12 = nn.Linear(160, 2)
         self.linear21 = nn.Linear(640*480, 160)
-        self.linear22 = nn.Linear(160, 2)
+        self.linear22 = nn.Linear(160, 1)
         self.relu = nn.ReLU()
 
         self.current_layer = 1

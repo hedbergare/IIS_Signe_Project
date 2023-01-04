@@ -1,9 +1,18 @@
-from loss_function import distance_loss
 
 
-def real_loss(Y_cord, Y_exist, Y_real):
-    for i in range(len(Y_cord)):
-        if Y_exist[i][0] < Y_exist[i][1]:
-            Y_cord[i][0] = 0
-            Y_cord[i][1] = 0
-    return distance_loss(Y_cord, Y_real)
+
+def real_loss(Y_exist, Y_real):
+    loss = 0
+    for i in range(len(Y_exist)):
+        if Y_exist[i] <0:
+            if Y_real[i] == 1:
+                loss += 1
+        else:
+            if Y_real[i] == -1:
+                loss += 1
+    return loss
+
+
+
+
+

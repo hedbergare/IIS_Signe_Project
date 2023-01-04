@@ -20,11 +20,18 @@ def ladda(typ, seed, validation_round, data_divided_into, data_pass):
         'letter_A',
         'letter_B',
         'letter_C',
+        'letter_G',
+        'letter_H',
+        'letter_I',
         'letter_L',
         'letter_R',
-        'letter_U'
+        'letter_U',
+        'letter_V',
+        'letter_W',
+        'letter_Y'
     ]
     for gest in gestures:
+        print(gest)
         data = one_letter(gest, data_divided_into, data_pass, video_mod)
         all_data_list.extend(data)  
     random.Random(seed).shuffle(all_data_list)
@@ -64,15 +71,14 @@ def one_letter(gest, data_divided_into, data_pass, video_mod):
 def get_one_video(one_video_csv, one_video, data_divided_into, data_pass):
     x_y_pairs = []
     num_of_frames = one_video_csv['frame'].nunique()
-    for frame_index in range(num_of_frames-1):
-        if frame_index%data_divided_into == data_pass:
-            one_frame_csv = one_video_csv[one_video_csv['frame']
+    for frame_index in range(data_pass,num_of_frames-1,data_divided_into):
+        one_frame_csv = one_video_csv[one_video_csv['frame']
                                             == frame_index]
-            one_frame_csv = one_frame_csv[one_frame_csv['joint']
+        one_frame_csv = one_frame_csv[one_frame_csv['joint']
                                             != 'hand_position']
-            this_frame = one_video[frame_index].float()
-            csv_one_frame = get_data_from_one_frame(one_frame_csv)
-            x_y_pairs.append([this_frame, csv_one_frame])
+        this_frame = one_video[frame_index].float()
+        csv_one_frame = get_data_from_one_frame(one_frame_csv)
+        x_y_pairs.append([this_frame, csv_one_frame])
     return x_y_pairs
 
 def get_data_from_one_frame(one_frame_csv):
@@ -87,4 +93,9 @@ def get_data_from_one_frame(one_frame_csv):
     return cord_tens
 
 
+train_data = ladda(typ='träning', seed=2, validation_round=1, data_divided_into=20, data_pass=1)
 
+print(type(train_data))
+print(len(train_data))
+print(train_data[0][0])
+print(train_data[0][1])
