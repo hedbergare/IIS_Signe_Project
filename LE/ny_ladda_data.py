@@ -13,7 +13,7 @@ def ladda(typ, seed, validation_round, data_divided_into, data_pass):
     elif typ == 'validering':
         video_mod = [validation_round]
     else:
-        video_mod = [1,2,3,4]
+        video_mod = [1,2,3,4,5]
         video_mod.remove(validation_round)
         
     gestures = [
@@ -31,7 +31,6 @@ def ladda(typ, seed, validation_round, data_divided_into, data_pass):
         'letter_Y'
     ]
     for gest in gestures:
-        print(gest)
         data = one_letter(gest, data_divided_into, data_pass, video_mod)
         all_data_list.extend(data)  
     random.Random(seed).shuffle(all_data_list)
@@ -40,11 +39,11 @@ def ladda(typ, seed, validation_round, data_divided_into, data_pass):
 def one_letter(gest, data_divided_into, data_pass, video_mod):
     resize = torchvision.transforms.Resize((640,480))
     all_data = []
-    path = f'./dataset_v0/ASL_{gest}'
+    path = f'../dataset_v0/ASL_{gest}'
     CSV = pd.read_csv(f'{path}/annotations.csv')
     num_of_videos = CSV['video_idx'].nunique()
     for video_i in range(num_of_videos):
-        if video_i%5 in video_mod:
+        if video_i%6 in video_mod:
             needs_scaling = False
             one_video = torch.tensor(iio.imread(f'{path}/videos/video_{video_i}.mp4'))
             one_video = torch.reshape(one_video, 
@@ -93,9 +92,5 @@ def get_data_from_one_frame(one_frame_csv):
     return cord_tens
 
 
-train_data = ladda(typ='träning', seed=2, validation_round=1, data_divided_into=20, data_pass=1)
 
-print(type(train_data))
-print(len(train_data))
-print(train_data[0][0])
-print(train_data[0][1])
+
