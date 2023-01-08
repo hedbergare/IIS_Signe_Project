@@ -15,3 +15,5 @@ def binary_loss(Y_pred, Y):
     for i in range(len(Y_pred)):
         loss += (Y_pred[i][0]-Y[i])**2
     return loss
+
+

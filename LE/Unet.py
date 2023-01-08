@@ -16,7 +16,7 @@ class Block(nn.Module):
         return self.conv2(self.relu(self.conv1(x)))
 
 
-class UNetModel(nn.Module):
+class UNetModelDNNST(nn.Module):
     def __init__(
         self, encodingLayersSizes: list[list[int]], 
         decodingLayesSizes: list[list[int]], ):
