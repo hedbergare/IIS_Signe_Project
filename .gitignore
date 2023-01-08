@@ -5,3 +5,5 @@ LE/__pycache__/ladda_data.cpython-310.pyc
 LE/__pycache__/Unet.cpython-310.pyc
 /GR/Data/new_X.npy
 /GR/Data/new_Y.npy
+/GR/Data/all_X.npy
+/GR/Data/all_Y.npy
