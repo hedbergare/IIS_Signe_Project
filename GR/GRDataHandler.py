@@ -64,6 +64,3 @@ def normalize_by_joint_distance(X_values):
 
         X_values[i] = X_values[i] / distance
     return X_values
-
-
-X_train, X_test, Y_train, Y_test = get_GR_data()
